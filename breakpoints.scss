@@ -4,113 +4,110 @@
 /* DO NOT MODIFY THIS FILE */
 /* ================================ */
 /* ================================ */
-@mixin hide($i:null) {
+@mixin _hide($i:null) {
     @if $i == important {
         display: none !important;
     } @else {
         display: none;
     }
 }
-@mixin breakpoint($point){
-    
-    @if $point == 320 {
-        @media screen and (min-width: 0px) and (max-width: 379px) { @content; }
-    }
-    @else if $point == '320-landscape' {
-        @media screen and (min-width: 0px) and (max-width: 379px) and (orientation:landscape) { @content; }
-    }
-    @else if $point == 480 {
-        @media screen and (min-width: 380px) and (max-width: 519px) { @content; }
-    }
-    @else if $point == '480-landscape' {
-        @media screen and (min-width: 380px) and (max-width: 519px) and (orientation:landscape){ @content; }
-    }
-    @else if $point == 520 {
-        @media screen and (min-width: 520px) and (max-width: 599px) { @content; }
-    }
-    @else if $point == '520-landscape' {
-        @media screen and (min-width: 520px) and (max-width: 599px) { @content; }
-    }
-    @else if ($point == phone) or ($point == mobile) {
-        @media screen and (min-width: 1px) and (max-width: 599px) { @content; }
-    }
-    @else if $point == 600 {
-        @media screen and (min-width: 600px) and (max-width: 699px) { @content; }
-    }
-    @else if $point == '600-landscape' {
-        @media screen and (min-width: 600px) and (max-width: 699px) and (orientation:landscape)  { @content; }
-    }
-    @else if $point == 700 {
-        @media screen and (min-width: 700px) and (max-width: 799px) { @content; }
-    }
-    @else if $point == '700-landscape' {
-        @media screen and (min-width: 700px) and (max-width: 799px) and (orientation:landscape) { @content; }
-    }
-    @else if $point == tablet {
-        @media screen and (min-width: 600px) and (max-width: 799px) { @content; }
-    }
-    @else if $point == 800 {
-        @media screen and (min-width: 800px) and (max-width: 919px) { @content; }
-    }
-    @else if ($point == 'odd-device') or ($point == 'odddevice') {
-        @media screen and (min-width: 800px) and (max-width: 919px) { @content; }
-    }
-    @else if $point == 920 {
-        @media screen and (min-width: 920px) and (max-width: 999px) { @content; }
-    }
-    @else if $point == desktop {
-        @media screen and (min-width: 920px) and (max-width: 1920px) { @content; }
-    }
-    @else if $point == 1000 {
-        @media screen and (min-width: 1000px) and (max-width: 1199px) { @content; }
-    }
-    @else if $point == 1200 {
-        @media screen and (min-width: 1200px) and (max-width: 1439px) { @content; }
-    }
-    @else if $point == 1440 {
-        @media screen and (min-width: 1440px) and (max-width: 1599px) { @content; }
-    }
-    @else if $point == 1600 {
-        @media screen and (min-width: 1600px) and (max-width: 1700px) { @content; }
-    }
-    @else if $point == fullscreen {
-        @media screen and (min-width: 1439px) { @content; }
-    }
-    @else if ($point == offcanvas) or ($point == 'off-canvas') {
-        @media screen and (max-width: 915px) { @content; }
-    }
-    
+
+
+$_breakpoints: (
+	mobile: 			(0px,599px),
+	phone: 				(0px,599px),/*alias for mobile*/
+	320: 				(0px,379px),
+	480: 				(380px,519px),
+	520: 				(520px,599px),
+	tablet: 			(600px,799px),
+	600: 				(600px,699px),
+	700: 				(700px,799px),
+	'odd-device': 		(800px,919px),/* alia for 800*/
+	800: 				(800px,919px),
+	desktop: 			(920px,1920px),
+	920: 				(920px,999px),
+	1000: 				(1000px,1199px),
+	1200: 				(1200px,1439px),
+	1440: 				(1440px,1599px),
+	1600: 				(1600px,1700px),
+	fullscreen: 		(1439px,10000px),
+	offcanvas: 			(0px,915px),
+	'off-canvas': 		(0px,915px)/* alia for offcanvas*/
+);
+
+@mixin _breakpoint($screen,$param:null){
+	
+	$values: map-get($_breakpoints, $screen);
+	
+	/* landscape queries only */
+	@if $values != null and $param == landscape {
+		@media screen and (min-width: nth($values, 1)) and (max-width: nth($values, 2)) and (orientation:landscape) { 
+			@content;
+		}
+	}
+	
+	/*custom 3rd parameter [ex: max-height:800px ] */
+	@if $values != null and $param != null {
+		@media screen and (min-width: nth($values, 1)) and (max-width: nth($values, 2)) and ($param) { 
+			@content;
+		}
+	}
+	
+	@else if $values != null {
+		@media screen and (min-width: nth($values, 1)) and (max-width: nth($values, 2)) { 
+			@content;
+		}
+	}
+	
+	@else if $screen != null and $param != null {
+		@media screen and (min-width: $screen) and ($param) {
+			@content;
+		}
+	}
+	
+	@else if $screen != null {
+		@media screen and (min-width: $screen) {
+			@content;
+		}
+	}
+	
+	@else {
+		@warn "no value could be for `#{$screen}`. "
+			+ "Please make sure it is defined in `$_breakpoints` map.";
+	}
 }
+
+
 /* override the default classes when no grid is present*/
 .hide-desktop { 
-    @include breakpoint(desktop) { @include hide(important);}
+    @include _breakpoint(desktop) { @include _hide(important);}
 }
 .hide-odd { 
-    @include breakpoint('odd-device') { @include hide(important);}
+    @include _breakpoint('odd-device') { @include _hide(important);}
 }
 .hide-tablet { 
-    @include breakpoint(tablet) { @include hide(important);}
+    @include _breakpoint(tablet) { @include _hide(important);}
 }
 .hide-mobile { 
-    @include breakpoint(mobile) { @include hide(important);}
+    @include _breakpoint(mobile) { @include _hide(important);}
 }
 .show-desktop {
-    @include breakpoint(mobile) { @include hide(important);}
-    @include breakpoint('odd-device') { @include hide(important);}
-    @include breakpoint(tablet) { @include hide(important);}
+    @include _breakpoint(mobile) { @include _hide(important);}
+    @include _breakpoint('odd-device') { @include _hide(important);}
+    @include _breakpoint(tablet) { @include _hide(important);}
 }
 .show-odd {
-    @include breakpoint(desktop) { @include hide(important);}
-    @include breakpoint(mobile) { @include hide(important);}
-    @include breakpoint(tablet) { @include hide(important);}
+    @include _breakpoint(desktop) { @include _hide(important);}
+    @include _breakpoint(mobile) { @include _hide(important);}
+    @include _breakpoint(tablet) { @include _hide(important);}
 }
 .show-tablet {
-    @include breakpoint(desktop) { @include hide(important);}
-    @include breakpoint('odd-device') { @include hide(important);}
-    @include breakpoint(mobile) { @include hide(important);}
+    @include _breakpoint(desktop) { @include _hide(important);}
+    @include _breakpoint('odd-device') { @include _hide(important);}
+    @include _breakpoint(mobile) { @include _hide(important);}
 }
 .show-mobile {
-    @include breakpoint(esktop) { @include hide(important);}
-    @include breakpoint('odd-device') { @include hide(important);}
-    @include breakpoint(tablet) { @include hide(important);}
+    @include _breakpoint(desktop) { @include _hide(important);}
+    @include _breakpoint('odd-device') { @include _hide(important);}
+    @include _breakpoint(tablet) { @include _hide(important);}
 }
