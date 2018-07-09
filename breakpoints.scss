@@ -22,7 +22,7 @@ $breakpoints: (
 	tablet: 			(600px,799px),
 	600: 				(600px,699px),
 	700: 				(700px,799px),
-	'odd-device': 		(800px,919px),/* alia for 800*/
+	'odd-device': 			(800px,919px),/* alia for 800*/
 	800: 				(800px,919px),
 	desktop: 			(920px,1920px),
 	920: 				(920px,999px),
@@ -30,9 +30,9 @@ $breakpoints: (
 	1200: 				(1200px,1439px),
 	1440: 				(1440px,1599px),
 	1600: 				(1600px,1700px),
-	fullscreen: 		(1439px,10000px),
+	fullscreen: 			(1439px,100%),
 	offcanvas: 			(0px,915px),
-	'off-canvas': 		(0px,915px)/* alia for offcanvas*/
+	'off-canvas': 			(0px,915px)/* alia for offcanvas*/
 );
 
 @mixin breakpoint($screen,$param:null){
