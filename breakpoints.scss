@@ -1,4 +1,4 @@
-/* media query shortcuts for single queries */
+/* MEDIA QUERIES */
 /* ================================ */
 /* ================================ */
 /* DO NOT MODIFY THIS FILE */
@@ -12,8 +12,8 @@
     }
 }
 
-
-$breakpoints: (
+//breakpoint array key: (min,max)
+$_breakpoints: (
 	mobile: 			(0px,599px),
 	phone: 				(0px,599px),/*alias for mobile*/
 	320: 				(0px,379px),
@@ -22,7 +22,7 @@ $breakpoints: (
 	tablet: 			(600px,799px),
 	600: 				(600px,699px),
 	700: 				(700px,799px),
-	'odd-device': 			(800px,919px),/* alia for 800*/
+	'odd-device': 		(800px,919px),/* alia for 800*/
 	800: 				(800px,919px),
 	desktop: 			(920px,1920px),
 	920: 				(920px,999px),
@@ -30,14 +30,20 @@ $breakpoints: (
 	1200: 				(1200px,1439px),
 	1440: 				(1440px,1599px),
 	1600: 				(1600px,1700px),
-	fullscreen: 			(1439px,100%),
+	fullscreen: 		(1439px,100%),
 	offcanvas: 			(0px,915px),
-	'off-canvas': 			(0px,915px)/* alia for offcanvas*/
+	'off-canvas': 		(0px,915px),/* alia for offcanvas*/	
 );
 
+/*
+//use: 
+//@include breakpoint(xxxx){rules...}; or 
+//@include breakpoint(xxxx,landscape){rules...}; or
+//@include breakpoint(xxxx,'max-height:800px'){rules...};, etc...
+*/
 @mixin breakpoint($screen,$param:null){
 	
-	$values: map-get($breakpoints, $screen);
+	$values: map-get($_breakpoints, $screen);
 	
 	/* landscape queries only */
 	@if $values != null and $param == landscape {
@@ -77,8 +83,8 @@ $breakpoints: (
 	}
 }
 
-
-/* override the default classes when no grid is present*/
+//--------------------------------------------
+/* quick show/hide classes */
 .hide-desktop { 
     @include breakpoint(desktop) { @include _hide(important);}
 }
