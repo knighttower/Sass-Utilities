@@ -13,7 +13,7 @@
 }
 
 
-$_breakpoints: (
+$breakpoints: (
 	mobile: 			(0px,599px),
 	phone: 				(0px,599px),/*alias for mobile*/
 	320: 				(0px,379px),
@@ -35,7 +35,7 @@ $_breakpoints: (
 	'off-canvas': 		(0px,915px)/* alia for offcanvas*/
 );
 
-@mixin _breakpoint($screen,$param:null){
+@mixin breakpoint($screen,$param:null){
 	
 	$values: map-get($_breakpoints, $screen);
 	
@@ -80,34 +80,34 @@ $_breakpoints: (
 
 /* override the default classes when no grid is present*/
 .hide-desktop { 
-    @include _breakpoint(desktop) { @include _hide(important);}
+    @include breakpoint(desktop) { @include _hide(important);}
 }
 .hide-odd { 
-    @include _breakpoint('odd-device') { @include _hide(important);}
+    @include breakpoint('odd-device') { @include _hide(important);}
 }
 .hide-tablet { 
-    @include _breakpoint(tablet) { @include _hide(important);}
+    @include breakpoint(tablet) { @include _hide(important);}
 }
 .hide-mobile { 
-    @include _breakpoint(mobile) { @include _hide(important);}
+    @include breakpoint(mobile) { @include _hide(important);}
 }
 .show-desktop {
-    @include _breakpoint(mobile) { @include _hide(important);}
-    @include _breakpoint('odd-device') { @include _hide(important);}
-    @include _breakpoint(tablet) { @include _hide(important);}
+    @include breakpoint(mobile) { @include _hide(important);}
+    @include breakpoint('odd-device') { @include _hide(important);}
+    @include breakpoint(tablet) { @include _hide(important);}
 }
 .show-odd {
-    @include _breakpoint(desktop) { @include _hide(important);}
-    @include _breakpoint(mobile) { @include _hide(important);}
-    @include _breakpoint(tablet) { @include _hide(important);}
+    @include breakpoint(desktop) { @include _hide(important);}
+    @include breakpoint(mobile) { @include _hide(important);}
+    @include breakpoint(tablet) { @include _hide(important);}
 }
 .show-tablet {
-    @include _breakpoint(desktop) { @include _hide(important);}
-    @include _breakpoint('odd-device') { @include _hide(important);}
-    @include _breakpoint(mobile) { @include _hide(important);}
+    @include breakpoint(desktop) { @include _hide(important);}
+    @include breakpoint('odd-device') { @include _hide(important);}
+    @include breakpoint(mobile) { @include _hide(important);}
 }
 .show-mobile {
-    @include _breakpoint(desktop) { @include _hide(important);}
-    @include _breakpoint('odd-device') { @include _hide(important);}
-    @include _breakpoint(tablet) { @include _hide(important);}
+    @include breakpoint(desktop) { @include _hide(important);}
+    @include breakpoint('odd-device') { @include _hide(important);}
+    @include breakpoint(tablet) { @include _hide(important);}
 }
