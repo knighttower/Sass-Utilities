@@ -22,7 +22,7 @@ $_breakpoints: (
 	tablet: 			(600px,799px),
 	600: 				(600px,699px),
 	700: 				(700px,799px),
-	'odd-device': 		(800px,919px),/* alia for 800*/
+	'odd-device': 			(800px,919px),/* alia for 800*/
 	800: 				(800px,919px),
 	desktop: 			(920px,1920px),
 	920: 				(920px,999px),
@@ -30,53 +30,74 @@ $_breakpoints: (
 	1200: 				(1200px,1439px),
 	1440: 				(1440px,1599px),
 	1600: 				(1600px,1700px),
-	fullscreen: 		(1439px,100%),
+	fullscreen: 			(1439px,0),
 	offcanvas: 			(0px,915px),
-	'off-canvas': 		(0px,915px),/* alia for offcanvas*/	
+	'off-canvas': 		(0px,915px),/* alia for offcanvas*/
 );
 
-/*
+
 //use: 
 //@include breakpoint(xxxx){rules...}; or 
 //@include breakpoint(xxxx,landscape){rules...}; or
 //@include breakpoint(xxxx,'max-height:800px'){rules...};, etc...
-*/
+
 @mixin breakpoint($screen,$param:null){
 	
 	$values: map-get($_breakpoints, $screen);
 	
-	/* landscape queries only */
-	@if $values != null and $param == landscape {
-		@media screen and (min-width: nth($values, 1)) and (max-width: nth($values, 2)) and (orientation:landscape) { 
+	$min: 0;
+	$max: 0;
+	
+	@if $values != null {
+		$min: nth($values, 1);
+		$max: nth($values, 2);
+	}
+	
+	
+	//when min-width and max-width are set
+	//landscape queries only
+	@if $values != null and $param == landscape and $max != 0 {
+		@media screen and (min-width: $min) and (max-width: $max) and (orientation:landscape) { 
 			@content;
 		}
 	}
 	
-	/*custom 3rd parameter [ex: max-height:800px ] */
-	@if $values != null and $param != null {
-		@media screen and (min-width: nth($values, 1)) and (max-width: nth($values, 2)) and ($param) { 
+	//when min-width and max-width are set
+	//--custom 3rd parameter [ex: max-height:800px ]
+	@if $values != null and $param != null and $max != 0 {
+		@media screen and (min-width: $min) and (max-width: $max) and ($param) { 
 			@content;
 		}
 	}
 	
-	@else if $values != null {
-		@media screen and (min-width: nth($values, 1)) and (max-width: nth($values, 2)) { 
+	//when min-width and max-width are set
+	@else if $values != null and $max != 0 {
+		@media screen and (min-width: $min) and (max-width: $max) { 
 			@content;
 		}
 	}
 	
+	//when a only min-width is needed or set
+	@else if $values != null and $max == 0 {
+		@media screen and (min-width: $min) { 
+			@content;
+		}
+	}
+	
+	//when a single unit is passed ex: 300px and extra param
 	@else if $screen != null and $param != null {
 		@media screen and (min-width: $screen) and ($param) {
 			@content;
 		}
 	}
 	
+	//when a single unit is passed ex: 300px
 	@else if $screen != null {
 		@media screen and (min-width: $screen) {
 			@content;
 		}
 	}
-	
+	//when no value
 	@else {
 		@warn "no value could be for `#{$screen}`. "
 			+ "Please make sure it is defined in `$_breakpoints` map.";
