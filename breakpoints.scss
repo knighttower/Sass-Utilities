@@ -37,7 +37,7 @@ $breakpoints: (
 
 @mixin breakpoint($screen,$param:null){
 	
-	$values: map-get($_breakpoints, $screen);
+	$values: map-get($breakpoints, $screen);
 	
 	/* landscape queries only */
 	@if $values != null and $param == landscape {
